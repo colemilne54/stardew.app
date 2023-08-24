@@ -16,6 +16,7 @@ import {
 import { parseWalnuts } from "./parsers/walnuts";
 import { parseNotes } from "./parsers/notes";
 import { parseScraps } from "./parsers/scraps";
+import { parseBundles } from "./parsers/bundles";
 
 const semverSatisfies = require("semver/functions/satisfies");
 
@@ -58,6 +59,9 @@ export function parseSaveFile(xml: string) {
     // obelisks and golden clock
     const parsedPerfection = parsePerfection(saveFile.SaveGame);
 
+    // bundles are shared between users, however we need mail from one
+    const parsedBundles = parseBundles(players[0], saveFile.SaveGame);
+
     // Map of uniqueMultiplayerID to array of children names
     const children = findChildren(saveFile.SaveGame);
 
@@ -79,6 +83,7 @@ export function parseSaveFile(xml: string) {
         notes: parseNotes(player),
         scraps: parseScraps(player),
         perfection: parsedPerfection,
+        bundles: parsedBundles,
       };
       processedPlayers.push(processedPlayer);
     });
